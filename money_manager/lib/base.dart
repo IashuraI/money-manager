@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:money_manager/pages/accounts.dart';
 import 'package:money_manager/pages/goals.dart';
 import 'package:money_manager/pages/home.dart';
@@ -28,12 +29,19 @@ class _BaseState extends State<Base> {
         bucket: bucket,
         child: currentScreen,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          
-        },
+      floatingActionButton: SpeedDial(
+        icon: Icons.add,
+        activeIcon: Icons.close,
         backgroundColor: const Color.fromRGBO(228, 235, 242, 1),
-        child: const Icon(Icons.add, color: Color.fromRGBO(132, 164, 90, 1),),
+        foregroundColor: const Color.fromRGBO(132, 164, 90, 1),
+        spacing: 15,
+        spaceBetweenChildren: 20,
+        switchLabelPosition: true,
+        children: [
+          SpeedDialChild(child: const Icon(Icons.receipt_long, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Record"),
+          SpeedDialChild(child: const Icon(Icons.account_balance, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Account"),
+          SpeedDialChild(child: const Icon(Icons.add_task, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Goal")
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -56,7 +64,7 @@ class _BaseState extends State<Base> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.home, color: currentColor(0))
+                            Icon(Icons.receipt_long, color: currentColor(0))
                           ],
                         ),
                         ),
