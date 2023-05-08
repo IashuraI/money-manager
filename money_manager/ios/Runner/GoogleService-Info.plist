@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>309112104218-vnbe07d0rfvr90k7ek0btu7kjs024q1i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.309112104218-vnbe07d0rfvr90k7ek0btu7kjs024q1i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDZ63WT7wR6dHA4NxqSHJeT-0ENPWn31WY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>309112104218</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.moneyManager</string>
+	<key>PROJECT_ID</key>
+	<string>pc-api-7942935858695830085-634</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pc-api-7942935858695830085-634.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:309112104218:ios:a2e8d728e3ac367465f8a3</string>
+</dict>
+</plist>
