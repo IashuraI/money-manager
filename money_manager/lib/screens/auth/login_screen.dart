@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Column(
               children: [
                 TextFormField(
+                  controller: _email,
                   decoration: const InputDecoration(
                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -52,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: height*0.01),
                 TextFormField(
+                  controller: _password,
                   decoration: const InputDecoration(  
                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -70,18 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: _email.text, 
                       password: _password.text
                     );
-
-                    if(result.user != null){
-                      if(!mounted) return;
-                      Navigator.of(context).popAndPushNamed("/home/");
-                    }
-                    else{
-                      
-                    }
+                    if(!mounted) return;
+                    Navigator.of(context).popAndPushNamed("/home/");
                   }, 
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)))
