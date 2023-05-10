@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Height = MediaQuery.of(context).size.height;
-    final Width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Container(
@@ -41,7 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     child: const Text("Login"),
                     )),
-                SizedBox(width: Width * 0.05),
+                SizedBox(width: width * 0.05),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {}, 
