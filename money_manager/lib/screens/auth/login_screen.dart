@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../services/device_preferences_service';
+import 'package:form_validation/form_validation.dart';
+import '../../services/device_preferences_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,14 +13,28 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+
+  late bool _passwordVisible;
   
+  late final GlobalKey<FormFieldState> _emailField;
+
   @override
   void initState(){
     _email = TextEditingController();
     _password = TextEditingController();
 
+    _passwordVisible = true;
+
+    _emailField = GlobalKey();
+
     super.initState();
   }
+
+  void toggle() {
+      setState(() {
+        _passwordVisible = !_passwordVisible;
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +56,23 @@ class _LoginScreenState extends State<LoginScreen> {
             Column(
               children: [
                 TextFormField(
+                  key: _emailField,
                   controller: _email,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    final validator = Validator(
+                      validators: [
+                        RequiredValidator(),
+                        EmailValidator(),
+                      ],
+                    );
+
+                    return validator.validate(
+                      context: context,
+                      label: 'Email',
+                      value: value,
+                    );
+                  },
                   decoration: const InputDecoration(
                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -54,30 +85,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: height*0.01),
                 TextFormField(
                   controller: _password,
-                  decoration: const InputDecoration(  
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    prefixIcon: Icon(Icons.fingerprint),
+                  obscureText: _passwordVisible,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                    enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                    prefixIcon: const Icon(Icons.fingerprint),
                     labelText: "Password",
                     hintText: "password",
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      onPressed: null,
-                      icon: Icon(Icons.remove_red_eye))
+                      icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility),
+                      onPressed: () {
+                        toggle();
+                      },
+                    )),
                   ),
-                ),
               ],
             ),
             Column(
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: _email.text, 
-                      password: _password.text
-                    );
-                    if(!mounted) return;
-                    Navigator.of(context).popAndPushNamed("/home/");
+                    if(_emailField.currentState!.validate()){
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: _email.text, 
+                        password: _password.text
+                      );
+                      if(!mounted) return;
+                        Navigator.of(context).popAndPushNamed("/home/");
+                    }
                   }, 
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)))

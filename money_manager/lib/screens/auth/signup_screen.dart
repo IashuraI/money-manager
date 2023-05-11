@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../services/device_preferences_service';
+import 'package:form_validation/form_validation.dart';
+import '../../services/device_preferences_service.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -14,16 +15,28 @@ class _SignupScreenState extends State<SignupScreen> {
   late final TextEditingController _password;
   late final TextEditingController _repeatedpassword;
 
+  late final GlobalKey<FormFieldState> _emailField;
+
+  late bool _passwordVisible;
+
   @override
   void initState(){
     _email = TextEditingController();
     _password = TextEditingController();
     _repeatedpassword = TextEditingController();
 
+    _passwordVisible = true;
+
+    _emailField = GlobalKey();
+
     super.initState();
   }
 
-
+  void toggle() {
+      setState(() {
+        _passwordVisible = !_passwordVisible;
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +58,23 @@ class _SignupScreenState extends State<SignupScreen> {
             Column(
               children: [
                 TextFormField(
+                  key: _emailField,
                   controller: _email,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    final validator = Validator(
+                      validators: [
+                        RequiredValidator(),
+                        EmailValidator(),
+                      ],
+                    );
+
+                    return validator.validate(
+                      context: context,
+                      label: 'Email',
+                      value: value,
+                    );
+                  },
                   decoration: const InputDecoration(
                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -58,31 +87,42 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(height: height*0.01),
                 TextFormField(
                   controller: _password,
-                  decoration: const InputDecoration(
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    prefixIcon: Icon(Icons.fingerprint),
+                  obscureText: _passwordVisible,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                    enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                    prefixIcon: const Icon(Icons.fingerprint),
                     labelText: "Password",
                     hintText: "password",
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      onPressed: null,
-                      icon: Icon(Icons.remove_red_eye))
+                      icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility),
+                      onPressed: () {
+                        toggle();
+                      },
+                    )),
                   ),
-                ),
                 SizedBox(height: height*0.01),
                 TextFormField(
                   controller: _repeatedpassword,
-                  decoration: const InputDecoration(
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    prefixIcon: Icon(Icons.fingerprint),
+                  obscureText: _passwordVisible,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                    enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                    prefixIcon: const Icon(Icons.fingerprint),
                     labelText: "Repeat Password",
                     hintText: "Repeat password",
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      onPressed: null,
-                      icon: Icon(Icons.remove_red_eye))
+                      icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility),
+                      onPressed: () {
+                        toggle();
+                      },
+                    )
                   ),
                 ),
               ],
@@ -91,17 +131,19 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    final result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: _email.text, 
-                      password: _password.text
-                    );
-
-                    if(result.user != null){
-                      if(!mounted) return;
-                      Navigator.of(context).popAndPushNamed("/home/");
-                    }
-                    else{
+                    if (_emailField.currentState!.validate()) {
+                      final result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                        email: _email.text, 
+                        password: _password.text
+                      );
                       
+                      if(result.user != null){
+                        if(!mounted) return;
+                        Navigator.of(context).popAndPushNamed("/home/");
+                      }
+                      else{
+                        
+                      }
                     }
                   }, 
                   style: ElevatedButton.styleFrom(

@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_speed_dial: ^6.2.0
+  form_validation: ^2.1.0+24
 
 dev_dependencies:
   flutter_test:

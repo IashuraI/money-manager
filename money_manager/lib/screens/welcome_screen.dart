@@ -41,7 +41,9 @@ class WelcomeScreen extends StatelessWidget {
                 SizedBox(width: width * 0.05),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {}, 
+                    onPressed: () {
+                      Navigator.of(context).popAndPushNamed("/signup/");
+                    }, 
                     style: ElevatedButton.styleFrom(
                       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)))
                     ),
