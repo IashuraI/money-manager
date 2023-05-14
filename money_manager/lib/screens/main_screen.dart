@@ -38,9 +38,21 @@ class _MainScreenState extends State<MainScreen> {
         spaceBetweenChildren: 20,
         switchLabelPosition: true,
         children: [
-          SpeedDialChild(child: const Icon(Icons.receipt_long, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Record"),
-          SpeedDialChild(child: const Icon(Icons.account_balance, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Account"),
-          SpeedDialChild(child: const Icon(Icons.add_task, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Goal")
+          SpeedDialChild(
+            onTap: () {
+              Navigator.pushNamed(context, "/add_record/");
+            },
+            child: const Icon(Icons.receipt_long, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Record"),
+          SpeedDialChild(
+            onTap: () {
+              Navigator.pushNamed(context, "/add_account/");
+            },
+            child: const Icon(Icons.account_balance, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Account"),
+          SpeedDialChild(
+            onTap: () {
+              Navigator.pushNamed(context, "/add_goal/");
+            },
+            child: const Icon(Icons.add_task, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Goal")
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
