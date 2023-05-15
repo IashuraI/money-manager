@@ -42,7 +42,6 @@ class _AccountScreenState extends State<AccountScreen> {
                   padding: EdgeInsets.fromLTRB(height * 0.05, height * 0.02, height * 0.05, height * 0.02),
                   child: Expanded(
                     child: SizedBox(
-                      width: getWigth(context),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,7 +64,6 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           Expanded(
                             child: SizedBox(
-                              height: height,
                               child: AccountModelListView(
                                 accounts: allAccounts,
                                 onDeleteNote: (account) async {
