@@ -3,10 +3,10 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
-enum RecordType { expense, income, transfer, goalTransfer }
+enum TransactionType { expense, income, transfer, goalTransfer }
 
 @immutable
-class RecordModel{
+class TransactionModel{
   final String? documentId;
   final String userId;
   final String accountId;
@@ -14,11 +14,11 @@ class RecordModel{
   final String comment;
   final Decimal ammount;
   final DateTime date;
-  final RecordType type;
+  final TransactionType type;
   final String currency;
 
 
-  const RecordModel({
+  const TransactionModel({
     this.documentId,
     required this.userId,
     required this.accountId,
@@ -48,7 +48,7 @@ class RecordModel{
     return json;
   }
 
-  RecordModel.fromSnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot):
+  TransactionModel.fromSnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot):
     documentId = snapshot.id,
     userId = snapshot.data()["userId"],
     accountId = snapshot.data()["accountId"].toString(),
@@ -56,6 +56,6 @@ class RecordModel{
     currency = snapshot.data()["currency"].toString(),
     ammount = Decimal.fromJson(snapshot.data()["balance"].toString()),
     date = DateFormat("EEE, MMM d, yyyy").parse(snapshot.data()["date"].toString()),
-    type = int.parse(snapshot.data()["type"].toString()) as RecordType,
+    type = int.parse(snapshot.data()["type"].toString()) as TransactionType,
     accountIdReciver = snapshot.data().keys.any((element) => element == "accountIdReciver") == true ? snapshot.data()["accountIdReciver"].toString().toString() : null;
 }

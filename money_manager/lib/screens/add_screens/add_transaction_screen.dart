@@ -2,23 +2,23 @@ import 'package:decimal/decimal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/models/record_model.dart';
-import 'package:money_manager/reposetories/record_repository.dart';
+import 'package:money_manager/models/transaction_model.dart';
+import 'package:money_manager/reposetories/transaction_repository.dart';
 import 'package:money_manager/services/device_preferences_service.dart';
 
-class AddRecordScreen extends StatefulWidget {
-  const AddRecordScreen({super.key});
+class AddTransactionScreen extends StatefulWidget {
+  const AddTransactionScreen({super.key});
 
   @override
-  State<AddRecordScreen> createState() => _AddRecordScreenState();
+  State<AddTransactionScreen> createState() => _AddTransactionScreenState();
 }
 
-class _AddRecordScreenState extends State<AddRecordScreen> {
+class _AddTransactionScreenState extends State<AddTransactionScreen> {
   late final TextEditingController _comment;
   late final TextEditingController _amount;
   late final TextEditingController _date;
   
-  late final RecordModelRepository _recordRepository;
+  late final TransactionModelRepository _transactionRepository;
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
     _amount = TextEditingController();
     _date = TextEditingController();
 
-    _recordRepository = RecordModelRepository();
+    _transactionRepository = TransactionModelRepository();
 
     super.initState();
   }
@@ -38,7 +38,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Add Record"), 
+          title: const Text("Add Transaction"), 
           foregroundColor: const Color.fromRGBO(113, 94, 78, 1), 
           backgroundColor: const Color.fromRGBO(244, 246, 251, 1),
           bottom: const TabBar(
@@ -109,17 +109,17 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     ),
                     ElevatedButton(
                         onPressed: () async {
-                          RecordModel newRecord = RecordModel(
+                          TransactionModel newTransaction = TransactionModel(
                             userId: FirebaseAuth.instance.currentUser!.uid,
                             accountId: "",
                             comment: _comment.text,
                             ammount: Decimal.parse(_amount.text),
                             date: DateFormat("EEE, MMM d, yyyy").parse(_date.text),
-                            type: RecordType.expense,
+                            type: TransactionType.expense,
                             currency: NumberFormat.simpleCurrency(name: "USD").locale
                           );
     
-                          await _recordRepository.create(newRecord);
+                          await _transactionRepository.create(newTransaction);
     
                           Navigator.of(context).pop();
                         }, 
@@ -188,17 +188,17 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     ),
                     ElevatedButton(
                         onPressed: () async {
-                          RecordModel newRecord = RecordModel(
+                          TransactionModel newTransaction = TransactionModel(
                             userId: FirebaseAuth.instance.currentUser!.uid,
                             accountId: "",
                             comment: _comment.text,
                             ammount: Decimal.parse(_amount.text),
                             date: DateFormat("EEE, MMM d, yyyy").parse(_date.text),
-                            type: RecordType.income,
+                            type: TransactionType.income,
                             currency: NumberFormat.simpleCurrency(name: "USD").locale
                           );
     
-                          await _recordRepository.create(newRecord);
+                          await _transactionRepository.create(newTransaction);
     
                           Navigator.of(context).pop();
                         }, 
@@ -268,18 +268,18 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     SizedBox(height: getHeight(context) *0.01),
                     ElevatedButton(
                         onPressed: () async {
-                          RecordModel newRecord = RecordModel(
+                          TransactionModel newTransaction = TransactionModel(
                             userId: FirebaseAuth.instance.currentUser!.uid,
                             accountId: "",
                             comment: _comment.text,
                             ammount: Decimal.parse(_amount.text),
                             date: DateFormat("EEE, MMM d, yyyy").parse(_date.text),
-                            type: RecordType.transfer,
+                            type: TransactionType.transfer,
                             accountIdReciver: "",
                             currency: NumberFormat.simpleCurrency(name: "USD").locale
                           );
     
-                          await _recordRepository.create(newRecord);
+                          await _transactionRepository.create(newTransaction);
     
                           Navigator.of(context).pop();
                         }, 

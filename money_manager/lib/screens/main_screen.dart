@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:money_manager/screens/account_screen.dart';
 import 'package:money_manager/screens/goal_screen.dart';
-import 'package:money_manager/screens/record_screen.dart';
+import 'package:money_manager/screens/transaction_screen.dart';
 import 'package:money_manager/screens/setting_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   int currentTab = 0;
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = const RecordScreen();
+  Widget currentScreen = const TransactionScreen();
 
   Color currentColor(int tabIndex){
     return currentTab == tabIndex ? const Color.fromRGBO(228, 235, 242, 0.5) : const Color.fromRGBO(132, 164, 90, 1);
@@ -40,9 +40,9 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           SpeedDialChild(
             onTap: () {
-              Navigator.pushNamed(context, "/add_record/");
+              Navigator.pushNamed(context, "/add_transaction/");
             },
-            child: const Icon(Icons.receipt_long, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Record"),
+            child: const Icon(Icons.receipt_long, color: Color.fromRGBO(132, 164, 90, 1),), label: "Add Transaction"),
           SpeedDialChild(
             onTap: () {
               Navigator.pushNamed(context, "/add_account/");
@@ -69,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
                       RawMaterialButton(
                         onPressed: () {
                           setState(() {
-                            currentScreen = const RecordScreen();
+                            currentScreen = const TransactionScreen();
                             currentTab = 0;
                           });
                         },

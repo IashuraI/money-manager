@@ -1,24 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/record_model.dart';
+import '../models/transaction_model.dart';
 
-class RecordModelRepository {
+class TransactionModelRepository {
   late final CollectionReference<Map<String, dynamic>> _collectionReference;
 
-  RecordModelRepository(){
-    _collectionReference = FirebaseFirestore.instance.collection("Records");
+  TransactionModelRepository(){
+    _collectionReference = FirebaseFirestore.instance.collection("Transactions");
   }
 
-  Future create(RecordModel model) async {
+  Future create(TransactionModel model) async {
     await _collectionReference.add(model.toJson());
   }
 
-  Stream<Iterable<RecordModel>> get() {
+  Stream<Iterable<TransactionModel>> get() {
     return _collectionReference
       .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
       .snapshots()
-      .map((event) => event.docs.map((doc) => RecordModel.fromSnapshot(doc)));
+      .map((event) => event.docs.map((doc) => TransactionModel.fromSnapshot(doc)));
   }
 
   Future<void> delete({required String documentId}) async {
