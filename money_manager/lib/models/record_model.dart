@@ -15,6 +15,7 @@ class RecordModel{
   final Decimal ammount;
   final DateTime date;
   final RecordType type;
+  final String currency;
 
 
   const RecordModel({
@@ -25,11 +26,12 @@ class RecordModel{
     required this.ammount,
     required this.date,
     required this.type,
+    required this.currency,
     this.accountIdReciver
   });
 
   toJson(){
-    Map json = Map.from(
+    Map<String, dynamic> json = Map<String, dynamic>.from(
       {
       "userId" : userId,
       "accountId" : accountId,
@@ -37,6 +39,7 @@ class RecordModel{
       "ammount" : ammount.toString(),
       "date" : date.toString(),
       "type" : type.toString(),
+      "currency" : currency.toString()
     });
 
     if(accountIdReciver != null){
@@ -50,6 +53,7 @@ class RecordModel{
     userId = snapshot.data()["userId"],
     accountId = snapshot.data()["accountId"].toString(),
     comment = snapshot.data()["comment"].toString(),
+    currency = snapshot.data()["currency"].toString(),
     ammount = Decimal.fromJson(snapshot.data()["balance"].toString()),
     date = DateFormat("EEE, MMM d, yyyy").parse(snapshot.data()["date"].toString()),
     type = int.parse(snapshot.data()["type"].toString()) as RecordType,

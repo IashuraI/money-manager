@@ -1,6 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_manager/models/account_model.dart';
 import 'package:money_manager/reposetories/account_repository.dart';
 import '../../services/device_preferences_service.dart';
@@ -67,10 +68,11 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                     AccountModel newAccount = AccountModel(
                       userId: FirebaseAuth.instance.currentUser!.uid, 
                       name: _accountName.text, 
-                      balance: Decimal.parse(_balance.text)
+                      balance: Decimal.parse(_balance.text),
+                      currency: NumberFormat.simpleCurrency(name: "USD").locale,
                     );
 
-                    _accountRepository.create(newAccount);
+                    await _accountRepository.create(newAccount);
 
                     Navigator.of(context).pop();
                   }, 

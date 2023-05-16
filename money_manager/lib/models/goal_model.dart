@@ -12,6 +12,7 @@ class GoalModel{
   final DateTime startDate;
   final DateTime? endDate;
   final Decimal endAmount;
+  final String currency;
 
   const GoalModel({
     this.documentId,
@@ -21,16 +22,18 @@ class GoalModel{
     required this.startDate,
     this.endDate,
     required this.endAmount,
+    required this.currency
   });
 
   toJson(){
-    Map json = Map.from({
+    Map<String, dynamic> json = Map<String, dynamic>.from({
       "userId" : userId,
       "name" : name,
       "balance" : balance.toString(),
       "startDate" : startDate.toString(),
       "endAmount" : endAmount.toString(),
-    });
+      "currency" : currency.toString()
+      });
 
     if(endDate != null){
       json.putIfAbsent("endDate", () => endDate.toString());
@@ -41,6 +44,7 @@ class GoalModel{
   GoalModel.fromSnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot):
     documentId = snapshot.id,
     userId = snapshot.data()["userId"],
+    currency = snapshot.data()["currency"] as String,
     name = snapshot.data()["name"] as String,
     balance = Decimal.fromJson(snapshot.data()["balance"].toString()),
     startDate = DateFormat("EEE, MMM d, yyyy").parse(snapshot.data()["startDate"].toString()),

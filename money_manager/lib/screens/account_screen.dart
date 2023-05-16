@@ -40,43 +40,41 @@ class _AccountScreenState extends State<AccountScreen> {
                 
                 return Padding(
                   padding: EdgeInsets.fromLTRB(height * 0.05, height * 0.02, height * 0.05, height * 0.02),
-                  child: Expanded(
-                    child: SizedBox(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0,height * 0.02,0,0),
-                            child: Text("Total",
-                            style: TextStyle(
-                              color: const Color.fromRGBO(113, 94, 78, 1),
-                              fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
-                            )),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0,height * 0.01,0,height * 0.02),
-                            child: Text(total.toString(),
-                            style: TextStyle(
-                              color: const Color.fromRGBO(132, 164, 90, 1),
-                              fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
-                            )),
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              child: AccountModelListView(
-                                accounts: allAccounts,
-                                onDeleteNote: (account) async {
-                                  await _accountRepository.delete(documentId: account.documentId! );
-                                },
-                                onTap: (account) {
-                                  
-                                },
-                              ) 
-                            )
+                  child: SizedBox(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0,height * 0.02,0,0),
+                          child: Text("Total",
+                          style: TextStyle(
+                            color: const Color.fromRGBO(113, 94, 78, 1),
+                            fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
+                          )),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0,height * 0.01,0,height * 0.02),
+                          child: Text(total.toString(),
+                          style: TextStyle(
+                            color: const Color.fromRGBO(132, 164, 90, 1),
+                            fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
+                          )),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            child: AccountModelListView(
+                              accounts: allAccounts,
+                              onDeleteNote: (account) async {
+                                await _accountRepository.delete(documentId: account.documentId! );
+                              },
+                              onTap: (account) {
+                                
+                              },
+                            ) 
                           )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
                 );

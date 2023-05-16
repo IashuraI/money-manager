@@ -7,12 +7,14 @@ class AccountModel{
   final String userId;
   final String name;
   final Decimal balance;
+  final String currency;
 
   const AccountModel({
     this.documentId,
     required this.userId,
     required this.name,
     required this.balance,
+    required this.currency
   });
 
   toJson(){
@@ -20,6 +22,7 @@ class AccountModel{
       "userId" : userId,
       "name" : name,
       "balance" : balance.toString(),
+      "currency" : currency.toString()
     };
   }
 
@@ -27,5 +30,6 @@ class AccountModel{
     documentId = snapshot.id,
     userId = snapshot.data()["userId"],
     name = snapshot.data()["name"] as String,
-    balance = Decimal.fromJson(snapshot.data()["balance"].toString());
+    balance = Decimal.fromJson(snapshot.data()["balance"].toString()),
+    currency = snapshot.data()["currency"] as String;
 }

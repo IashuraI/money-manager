@@ -2,8 +2,8 @@ import 'package:decimal/decimal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/models/account_model.dart';
-import 'package:money_manager/reposetories/account_repository.dart';
+import 'package:money_manager/models/record_model.dart';
+import 'package:money_manager/reposetories/record_repository.dart';
 import 'package:money_manager/services/device_preferences_service.dart';
 
 class AddRecordScreen extends StatefulWidget {
@@ -13,22 +13,20 @@ class AddRecordScreen extends StatefulWidget {
   State<AddRecordScreen> createState() => _AddRecordScreenState();
 }
 
-enum RecordType { income, expenses, transfer }
-
 class _AddRecordScreenState extends State<AddRecordScreen> {
-  late final TextEditingController _commentName;
-  late final TextEditingController _balance;
+  late final TextEditingController _comment;
+  late final TextEditingController _amount;
   late final TextEditingController _date;
   
-  late final AccountModelRepository _accountRepository;
+  late final RecordModelRepository _recordRepository;
 
   @override
   void initState() {
-    _commentName = TextEditingController();
-    _balance = TextEditingController();
+    _comment = TextEditingController();
+    _amount = TextEditingController();
     _date = TextEditingController();
 
-    _accountRepository = AccountModelRepository();
+    _recordRepository = RecordModelRepository();
 
     super.initState();
   }
@@ -60,7 +58,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                   children: [
                     SizedBox(height: getHeight(context) *0.01),
                     TextFormField(
-                      controller: _balance, 
+                      controller: _amount, 
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -73,7 +71,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     ),
                     SizedBox(height: getHeight(context) *0.01),
                     TextFormField(
-                      controller: _commentName,
+                      controller: _comment,
                       decoration: const InputDecoration(
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
                             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -111,13 +109,17 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     ),
                     ElevatedButton(
                         onPressed: () async {
-                          AccountModel newAccount = AccountModel(
-                            userId: FirebaseAuth.instance.currentUser!.uid, 
-                            name: _commentName.text, 
-                            balance: Decimal.parse(_balance.text)
+                          RecordModel newRecord = RecordModel(
+                            userId: FirebaseAuth.instance.currentUser!.uid,
+                            accountId: "",
+                            comment: _comment.text,
+                            ammount: Decimal.parse(_amount.text),
+                            date: DateFormat("EEE, MMM d, yyyy").parse(_date.text),
+                            type: RecordType.expense,
+                            currency: NumberFormat.simpleCurrency(name: "USD").locale
                           );
     
-                          _accountRepository.create(newAccount);
+                          await _recordRepository.create(newRecord);
     
                           Navigator.of(context).pop();
                         }, 
@@ -135,7 +137,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                   children: [
                     SizedBox(height: getHeight(context) *0.01),
                     TextFormField(
-                      controller: _balance, 
+                      controller: _amount, 
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -148,7 +150,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     ),
                     SizedBox(height: getHeight(context) *0.01),
                     TextFormField(
-                      controller: _commentName,
+                      controller: _comment,
                       decoration: const InputDecoration(
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
                             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -186,13 +188,17 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     ),
                     ElevatedButton(
                         onPressed: () async {
-                          AccountModel newAccount = AccountModel(
-                            userId: FirebaseAuth.instance.currentUser!.uid, 
-                            name: _commentName.text, 
-                            balance: Decimal.parse(_balance.text)
+                          RecordModel newRecord = RecordModel(
+                            userId: FirebaseAuth.instance.currentUser!.uid,
+                            accountId: "",
+                            comment: _comment.text,
+                            ammount: Decimal.parse(_amount.text),
+                            date: DateFormat("EEE, MMM d, yyyy").parse(_date.text),
+                            type: RecordType.income,
+                            currency: NumberFormat.simpleCurrency(name: "USD").locale
                           );
     
-                          _accountRepository.create(newAccount);
+                          await _recordRepository.create(newRecord);
     
                           Navigator.of(context).pop();
                         }, 
@@ -210,7 +216,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                   children: [
                     SizedBox(height: getHeight(context) *0.01),
                     TextFormField(
-                      controller: _balance, 
+                      controller: _amount, 
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -218,6 +224,18 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                             prefixIcon: Icon(Icons.attach_money),
                             labelText: "Amount",
                             hintText: "0",
+                            border: OutlineInputBorder()
+                          ),
+                    ),
+                    SizedBox(height: getHeight(context) *0.01),
+                    TextFormField(
+                      controller: _comment,
+                      decoration: const InputDecoration(
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                            prefixIcon: Icon(Icons.label),
+                            labelText: "Comment",
+                            hintText: "Comment",
                             border: OutlineInputBorder()
                           ),
                     ),
@@ -247,15 +265,21 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                         }
                       }
                     ),
+                    SizedBox(height: getHeight(context) *0.01),
                     ElevatedButton(
                         onPressed: () async {
-                          AccountModel newAccount = AccountModel(
-                            userId: FirebaseAuth.instance.currentUser!.uid, 
-                            name: _commentName.text, 
-                            balance: Decimal.parse(_balance.text)
+                          RecordModel newRecord = RecordModel(
+                            userId: FirebaseAuth.instance.currentUser!.uid,
+                            accountId: "",
+                            comment: _comment.text,
+                            ammount: Decimal.parse(_amount.text),
+                            date: DateFormat("EEE, MMM d, yyyy").parse(_date.text),
+                            type: RecordType.transfer,
+                            accountIdReciver: "",
+                            currency: NumberFormat.simpleCurrency(name: "USD").locale
                           );
     
-                          _accountRepository.create(newAccount);
+                          await _recordRepository.create(newRecord);
     
                           Navigator.of(context).pop();
                         }, 
