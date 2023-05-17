@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_overrides
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/foundation.dart';
@@ -32,4 +34,11 @@ class AccountModel{
     name = snapshot.data()["name"] as String,
     balance = Decimal.fromJson(snapshot.data()["balance"].toString()),
     currency = snapshot.data()["currency"] as String;
+
+  @override
+  bool operator ==(dynamic other) =>
+      other != null && other is AccountModel && other.documentId == documentId;
+
+  @override
+  int get hashCode => super.hashCode;
 }

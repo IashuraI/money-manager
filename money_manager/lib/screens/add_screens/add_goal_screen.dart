@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager/models/goal_model.dart';
 import '../../reposetories/goal_repository.dart';
+import '../../services/currency_service.dart';
 import '../../services/device_preferences_service.dart';
 
 class AddGoalScreen extends StatefulWidget {
@@ -15,20 +16,23 @@ class AddGoalScreen extends StatefulWidget {
 
 class _AddGoalScreenState extends State<AddGoalScreen> {
   late final TextEditingController _name;
-  late final TextEditingController _currency;
   late final TextEditingController _goalAmount;
   late final TextEditingController _endDate;
   
   late final GoalModelRepository _goalRepository;
 
+  late final List<String?> currencies;
+  String? _currencyName;
+
   @override
   void initState() {
     _name = TextEditingController();
-    _currency = TextEditingController();
     _goalAmount = TextEditingController();
     _endDate = TextEditingController();
 
     _goalRepository = GoalModelRepository();
+
+    currencies = CurrencyService.getCurrencyNames();
 
     super.initState();
   }
@@ -57,6 +61,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
             SizedBox(height: height*0.01),
             TextFormField(
               controller: _goalAmount,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -72,7 +77,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               decoration: InputDecoration( 
                 icon: const Icon(Icons.calendar_today),
                 hintText: DateFormat("EEE, MMM d, yyyy").format(DateTime.now()),
-                labelText: "Date",
+                labelText: "End Date",
                 border: InputBorder.none
               ),
               readOnly: true,
@@ -92,21 +97,45 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                 }
               }
             ),
+            Row(
+              children: [
+                Text("Currency", style: Theme.of(context).textTheme.titleMedium,),
+                SizedBox(width: getWigth(context)*0.2),
+                DropdownButton(
+                  value: _currencyName,
+                  items: currencies.map((locale) {
+                      return DropdownMenuItem<String>(
+                                        value: locale,
+                                        child: Text(locale!),
+                      );
+                  }).toList(), 
+                  onChanged: (String? value) {
+                    setState(() {
+                      _currencyName = value;
+                    });
+                  }
+                ),
+                SizedBox(width: getWigth(context)*0.05),
+                Text(NumberFormat.simpleCurrency(name: _currencyName).currencySymbol),
+              ],
+            ),
             ElevatedButton(
                   onPressed: () async {
-                    GoalModel newGoal = GoalModel(
-                      userId: FirebaseAuth.instance.currentUser!.uid, 
-                      name: _name.text, 
-                      balance: Decimal.zero, 
-                      startDate: DateTime.now(), 
-                      endAmount: Decimal.fromJson(_goalAmount.text), 
-                      currency: "en_US",
-                      endDate: _endDate.text.isNotEmpty ? DateFormat("EEE, MMM d, yyyy").parse(_endDate.text) : null,
-                    );
+                    if(_currencyName != null){
+                      GoalModel newGoal = GoalModel(
+                        userId: FirebaseAuth.instance.currentUser!.uid, 
+                        name: _name.text, 
+                        balance: Decimal.zero, 
+                        startDate: DateTime.now(), 
+                        endAmount: Decimal.fromJson(_goalAmount.text), 
+                        currency: _currencyName!,
+                        endDate: _endDate.text.isNotEmpty ? DateFormat("EEE, MMM d, yyyy").parse(_endDate.text) : null,
+                      );
 
-                    await _goalRepository.create(newGoal);
+                      await _goalRepository.create(newGoal);
 
-                    Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    }
                   }, 
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)))

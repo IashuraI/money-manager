@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_manager/services/device_preferences_service.dart';
 import '../models/account_model.dart';
 import '../reposetories/account_repository.dart';
@@ -55,7 +56,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0,height * 0.01,0,height * 0.02),
-                          child: Text(total.toString(),
+                          child: Text(NumberFormat.simpleCurrency(locale: allAccounts.first.currency, decimalDigits: 2)
+                            .format(total.toDouble()),
                           style: TextStyle(
                             color: const Color.fromRGBO(132, 164, 90, 1),
                             fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,

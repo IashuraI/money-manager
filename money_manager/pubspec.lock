@@ -158,6 +158,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_speed_dial:
     dependency: "direct main"
     description:
@@ -180,10 +185,10 @@ packages:
     dependency: "direct main"
     description:
       name: form_validation
-      sha256: "583e969bc919ba76a7d77e547377c8c8565900d5c99307050637aca6c851c7be"
+      sha256: ac08abd4ad4803ea84cbdd1c11be23da11d127a2afce6f99a46526fc90c4d3a8
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1+6"
+    version: "2.2.1+4"
   http:
     dependency: transitive
     description:
@@ -204,10 +209,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.1"
+    version: "0.18.0"
   js:
     dependency: transitive
     description:
@@ -220,10 +225,10 @@ packages:
     dependency: transitive
     description:
       name: json_class
-      sha256: c40fa382860f472e79b18f603e9fe1159c7ed3bfc6998a4bbd331825b42ae17a
+      sha256: "6a9cc5edd2ecabdda178572289aa9eb10052aff6836b62b0b6e9983a3a6597ea"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1+3"
+    version: "2.2.1+2"
   lints:
     dependency: transitive
     description:
@@ -308,10 +313,10 @@ packages:
     dependency: transitive
     description:
       name: rest_client
-      sha256: f788d489471b3c18641cc7ae32cde76ca9806075dda8b98e36bc479f118e6585
+      sha256: "7bc13fc4d36cfdcb98b4936fd7871d07cd69b97d98fad8223e8016785ea14b3b"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1+11"
+    version: "2.2.1+9"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -337,10 +342,10 @@ packages:
     dependency: transitive
     description:
       name: static_translations
-      sha256: af1b1f6e92f2e0ac54758947f5e12fa6ab13287f8df5c5cf85451cf41128211f
+      sha256: "444578f6cd92422b818ec0e236ee659b96d43deeb9456ad85f8161aec8749126"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.2+12"
+    version: "2.1.2+10"
   stream_channel:
     dependency: transitive
     description:

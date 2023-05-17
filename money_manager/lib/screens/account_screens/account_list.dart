@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_manager/models/account_model.dart';
 import 'package:money_manager/services/device_preferences_service.dart';
 
@@ -44,7 +45,7 @@ class AccountModelListView extends StatelessWidget {
           leading: const Icon(Icons.account_balance),
           trailing: 
               Text(
-                account.balance.toString(),
+                NumberFormat.simpleCurrency(name: account.currency, decimalDigits: 2).format(account.balance.toDouble()),
                 maxLines: 1,
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
