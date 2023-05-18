@@ -54,8 +54,8 @@ class TransactionModel{
     accountId = snapshot.data()["accountId"].toString(),
     comment = snapshot.data()["comment"].toString(),
     currency = snapshot.data()["currency"].toString(),
-    ammount = Decimal.fromJson(snapshot.data()["balance"].toString()),
+    ammount = Decimal.fromJson(snapshot.data()["ammount"].toString()),
     date = DateFormat("EEE, MMM d, yyyy").parse(snapshot.data()["date"].toString()),
-    type = int.parse(snapshot.data()["type"].toString()) as TransactionType,
+    type = TransactionType.values.firstWhere((e) => e.toString() == snapshot.data()["type"].toString()),
     accountIdReciver = snapshot.data().keys.any((element) => element == "accountIdReciver") == true ? snapshot.data()["accountIdReciver"].toString().toString() : null;
 }
