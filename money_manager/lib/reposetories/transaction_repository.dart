@@ -17,6 +17,7 @@ class TransactionModelRepository {
   Stream<Iterable<TransactionModel>> get() {
     return _collectionReference
       .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .orderBy("date", descending: true)
       .snapshots()
       .map((event) => event.docs.map((doc) => TransactionModel.fromSnapshot(doc)));
   }

@@ -11,6 +11,7 @@ dependencies:
   decimal: ^2.3.2
   firebase_auth: ^4.5.0
   firebase_core: ^2.11.0
+  fl_chart: ^0.62.0
   flutter:
     sdk: flutter
   flutter_localizations:

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager/models/account_model.dart';
-import 'package:money_manager/services/device_preferences_service.dart';
 
 typedef AccountModelCallback = void Function(AccountModel account);
 
@@ -17,8 +16,6 @@ class AccountModelListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = getHeight(context);
-
     return ScrollConfiguration(
       behavior: const ScrollBehavior(),
       child: GlowingOverscrollIndicator(
@@ -33,7 +30,7 @@ class AccountModelListView extends StatelessWidget {
                 onTap(account);
               },
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0,8,8,8),
+                padding: const EdgeInsets.fromLTRB(0,0,8,0),
                 child: ListTile(
                   title: Text(
                     account.name,

@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/models/goal_model.dart';
 import 'package:money_manager/reposetories/goal_repository.dart';
