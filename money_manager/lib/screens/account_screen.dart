@@ -39,46 +39,36 @@ class _AccountScreenState extends State<AccountScreen> {
                 final allAccounts = snapshot.data as Iterable<AccountModel>;
                 Decimal total = allAccounts.fold(Decimal.zero, (previousValue, element) => previousValue + element.balance);
                 
-                return Padding(
-                  padding: EdgeInsets.fromLTRB(height * 0.05, height * 0.02, height * 0.05, height * 0.02),
-                  child: SizedBox(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0,height * 0.02,0,0),
-                          child: Text("Total",
-                          style: TextStyle(
-                            color: const Color.fromRGBO(113, 94, 78, 1),
-                            fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
-                          )),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0,height * 0.01,0,height * 0.02),
-                          child: Text(NumberFormat.simpleCurrency(locale: allAccounts.first.currency, decimalDigits: 2)
-                            .format(total.toDouble()),
-                          style: TextStyle(
-                            color: const Color.fromRGBO(132, 164, 90, 1),
-                            fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
-                          )),
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            child: AccountModelListView(
-                              accounts: allAccounts,
-                              onDeleteNote: (account) async {
-                                await _accountRepository.delete(documentId: account.documentId! );
-                              },
-                              onTap: (account) {
-                                
-                              },
-                            ) 
-                          )
-                        )
-                      ],
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0,height * 0.02,0,0),
+                      child: Text("Total",
+                      style: TextStyle(
+                        color: const Color.fromRGBO(113, 94, 78, 1),
+                        fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
+                      )),
                     ),
-                  ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0,height * 0.01,0,height * 0.02),
+                      child: Text(NumberFormat.simpleCurrency(locale: allAccounts.first.currency, decimalDigits: 2)
+                        .format(total.toDouble()),
+                      style: TextStyle(
+                        color: const Color.fromRGBO(132, 164, 90, 1),
+                        fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
+                      )),
+                    ),
+                    Expanded(
+                      child: AccountModelListView(
+                        accounts: allAccounts,
+                        onTap: (account) {
+                          
+                        },
+                      )
+                    )
+                  ],
                 );
               } else {
                 return const CircularProgressIndicator();

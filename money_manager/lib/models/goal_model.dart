@@ -30,13 +30,13 @@ class GoalModel{
       "userId" : userId,
       "name" : name,
       "balance" : balance.toString(),
-      "startDate" : startDate.toString(),
+      "startDate" : DateFormat("EEE, MMM dd, yyyy").format(startDate),
       "endAmount" : endAmount.toString(),
       "currency" : currency.toString()
       });
 
     if(endDate != null){
-      json.putIfAbsent("endDate", () => endDate.toString());
+      json.putIfAbsent("endDate", () => DateFormat("EEE, MMM dd, yyyy").format(endDate!));
     }
     return json;
   }
@@ -47,7 +47,7 @@ class GoalModel{
     currency = snapshot.data()["currency"] as String,
     name = snapshot.data()["name"] as String,
     balance = Decimal.fromJson(snapshot.data()["balance"].toString()),
-    startDate = DateFormat("EEE, MMM d, yyyy").parse(snapshot.data()["startDate"].toString()),
+    startDate = DateFormat("EEE, MMM dd, yyyy").parse(snapshot.data()["startDate"].toString()),
     endAmount = Decimal.fromJson(snapshot.data()["endAmount"].toString()),
     endDate = snapshot.data().keys.any((element) => element == "endDate") == true ? DateFormat("EEE, MMM d, yyyy").parse(snapshot.data()["endDate"].toString()) : null;
 }

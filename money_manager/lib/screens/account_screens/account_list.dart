@@ -7,13 +7,11 @@ typedef AccountModelCallback = void Function(AccountModel account);
 
 class AccountModelListView extends StatelessWidget {
   final Iterable<AccountModel> accounts;
-  final AccountModelCallback onDeleteNote;
   final AccountModelCallback onTap;
 
   const AccountModelListView({
     Key? key,
     required this.accounts,
-    required this.onDeleteNote,
     required this.onTap,
   }) : super(key: key);
 
@@ -21,37 +19,42 @@ class AccountModelListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = getHeight(context);
 
-    return ListView.separated(
-      separatorBuilder: (context, index) => SizedBox(
-        height: height * 0.02,
-      ),
-      itemCount: accounts.length,
-      itemBuilder: (context, index) {
-        final account = accounts.elementAt(index);
-        return ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Color.fromRGBO(113, 94, 78, 0.3)),
-          ),
-          onTap: () {
-            onTap(account);
-          },
-          title: Text(
-            account.name,
-            maxLines: 1,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-          ),
-          leading: const Icon(Icons.account_balance),
-          trailing: 
-              Text(
-                NumberFormat.simpleCurrency(name: account.currency, decimalDigits: 2).format(account.balance.toDouble()),
-                maxLines: 1,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
+    return ScrollConfiguration(
+      behavior: const ScrollBehavior(),
+      child: GlowingOverscrollIndicator(
+        axisDirection: AxisDirection.down,
+        color: const Color.fromRGBO(132, 164, 90, 1),
+        child: ListView.builder(
+          itemCount: accounts.length,
+          itemBuilder: (context, index) {
+            final account = accounts.elementAt(index);
+            return TextButton(
+              onPressed: (){
+                onTap(account);
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0,8,8,8),
+                child: ListTile(
+                  title: Text(
+                    account.name,
+                    maxLines: 1,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  leading: const Icon(Icons.account_balance),
+                  trailing: 
+                      Text(
+                        NumberFormat.simpleCurrency(name: account.currency, decimalDigits: 2).format(account.balance.toDouble()),
+                        maxLines: 1,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                ),
               ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 }

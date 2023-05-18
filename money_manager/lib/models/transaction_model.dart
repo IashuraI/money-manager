@@ -37,7 +37,7 @@ class TransactionModel{
       "accountId" : accountId,
       "comment" : comment,
       "ammount" : ammount.toString(),
-      "date" : date.toString(),
+      "date" : DateFormat("EEE, MMM dd, yyyy").format(date),
       "type" : type.toString(),
       "currency" : currency.toString()
     });
