@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:money_manager/screens/account_screen.dart';
+import 'package:money_manager/screens/account_screens/account_screen.dart';
 import 'package:money_manager/screens/goal_screen.dart';
-import 'package:money_manager/screens/transaction_screen.dart';
+import 'package:money_manager/screens/transaction_screens/transaction_screen.dart';
 import 'package:money_manager/screens/setting_screen.dart';
 
 class MainScreen extends StatefulWidget {

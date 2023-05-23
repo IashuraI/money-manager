@@ -38,7 +38,7 @@ class AccountModelListView extends StatelessWidget {
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  leading: const Icon(Icons.account_balance),
+                  leading: Icon(IconData(account.codePoint, fontFamily: account.fontFamily, fontPackage: account.fontPackage)),
                   trailing: 
                       Text(
                         NumberFormat.simpleCurrency(name: account.currency, decimalDigits: 2).format(account.balance.toDouble()),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/screens/account_screen.dart';
+import 'package:money_manager/screens/account_screens/account_screen.dart';
 import 'package:money_manager/screens/add_screens/add_account_screen.dart';
 import 'package:money_manager/screens/add_screens/add_goal_screen.dart';
 import 'package:money_manager/screens/add_screens/add_transaction_screen.dart';
@@ -7,7 +7,7 @@ import 'package:money_manager/screens/auth/login_screen.dart';
 import 'package:money_manager/screens/auth/signup_screen.dart';
 import 'package:money_manager/screens/goal_screen.dart';
 import 'package:money_manager/screens/main_screen.dart';
-import 'package:money_manager/screens/transaction_screen.dart';
+import 'package:money_manager/screens/transaction_screens/transaction_screen.dart';
 import 'package:money_manager/screens/setting_screen.dart';
 import 'package:money_manager/screens/welcome_screen.dart';
 import 'base.dart';

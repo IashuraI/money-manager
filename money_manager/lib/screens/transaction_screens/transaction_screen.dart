@@ -1,8 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/models/transaction_model.dart';
+import 'package:money_manager/screens/transaction_screens/transaction_entity.dart';
 import 'package:money_manager/screens/transaction_screens/transaction_list.dart';
-import '../reposetories/transaction_repository.dart';
+import '../../reposetories/transaction_repository.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
@@ -26,7 +27,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Transactions"), foregroundColor: const Color.fromRGBO(113, 94, 78, 1), backgroundColor: const Color.fromRGBO(244, 246, 251, 1),),
-      body: StreamBuilder<Object>(
+      body: StreamBuilder(
         stream: _transactionModelRepository.get(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
@@ -72,43 +73,43 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     Expanded(
                             child: TransactionModelListView(
                               transactions: allTransactions,
-                              onTap: (account) {
-                                
+                              onTap: (transaction) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => TransactionEntity(transaction: transaction)));
                               },
                             ),
                           ),
                   ],
                 );
-                              }
-                              else {
-                                return const CircularProgressIndicator();
-                              }
-                              default:
-                                return const CircularProgressIndicator();
-                            }
-                        }
-                      ),
-                    );
-                  }
+              }
+              else {
+                return const CircularProgressIndicator();
+              }
+              default:
+                return const CircularProgressIndicator();
+            }
+        }
+      ),
+    );
+  }
 
-                  List<PieChartSectionData> showingSections(Iterable<TransactionModel> transactions) {
-                    List<PieChartSectionData> pcsd = List.empty(growable: true);
-                    for(int i = 0; i < transactions.length; i++){
-                      pcsd.add(
-                          PieChartSectionData(
-                            color: Colors.red,
-                            value: transactions.elementAt(i).ammount.toDouble(),
-                            radius: 50,
-                            titleStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.purple,
-                              shadows: [Shadow(color: Colors.black, blurRadius: 2)],
-                            ),
-                          )
-                      );
-                    }
+  List<PieChartSectionData> showingSections(Iterable<TransactionModel> transactions) {
+    List<PieChartSectionData> pcsd = List.empty(growable: true);
+    for(int i = 0; i < transactions.length; i++){
+      pcsd.add(
+          PieChartSectionData(
+            color: Colors.red,
+            value: transactions.elementAt(i).ammount.toDouble(),
+            radius: 50,
+            titleStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.purple,
+              shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+            ),
+          )
+      );
+    }
 
-                    return pcsd;
-                  }
-                }
+    return pcsd;
+  }
+}

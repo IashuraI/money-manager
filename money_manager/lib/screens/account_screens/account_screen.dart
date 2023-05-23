@@ -1,10 +1,11 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_manager/screens/account_screens/account_entity.dart';
 import 'package:money_manager/services/device_preferences_service.dart';
-import '../models/account_model.dart';
-import '../reposetories/account_repository.dart';
-import 'account_screens/account_list.dart';
+import '../../models/account_model.dart';
+import '../../reposetories/account_repository.dart';
+import 'account_list.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -53,7 +54,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0,height * 0.01,0,height * 0.02),
-                      child: Text(NumberFormat.simpleCurrency(locale: allAccounts.first.currency, decimalDigits: 2)
+                      child: Text(NumberFormat.simpleCurrency(name: allAccounts.first.currency, decimalDigits: 2)
                         .format(total.toDouble()),
                       style: TextStyle(
                         color: const Color.fromRGBO(132, 164, 90, 1),
@@ -64,7 +65,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       child: AccountModelListView(
                         accounts: allAccounts,
                         onTap: (account) {
-                          
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => AccountEntity(account: account)));
                         },
                       )
                     )

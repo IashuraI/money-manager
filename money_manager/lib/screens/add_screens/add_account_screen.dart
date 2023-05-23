@@ -1,6 +1,8 @@
 import 'package:decimal/decimal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/Models/IconPack.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager/models/account_model.dart';
 import 'package:money_manager/reposetories/account_repository.dart';
@@ -23,8 +25,12 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   late final List<String?> currencies;
   String? _currencyName;
 
+  Icon? _icon;
+
   @override
   void initState() {
+    _icon = const Icon(Icons.add);
+
     _accountName = TextEditingController();
     _balance = TextEditingController();
 
@@ -91,14 +97,29 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                 Text(NumberFormat.simpleCurrency(name: _currencyName).currencySymbol),
               ],
             ),
+            Row(
+              children: [
+                Text("Icon:", style: Theme.of(context).textTheme.titleMedium),
+                TextButton(onPressed: () async {
+                  IconData? icon = await FlutterIconPicker.showIconPicker(context, iconPackModes:  [ IconPack.material ]);
+
+                  setState(() {
+                    _icon = Icon(icon);
+                  });
+                } , child: _icon!),
+              ],
+            ),
             ElevatedButton(
                   onPressed: () async {
-                    if (_currencyName != null) {
+                    if (_currencyName != null && _icon != null) {
                       AccountModel newAccount = AccountModel(
                         userId: FirebaseAuth.instance.currentUser!.uid, 
                         name: _accountName.text, 
                         balance: Decimal.parse(_balance.text),
                         currency: _currencyName!,
+                        codePoint: _icon!.icon!.codePoint,
+                        fontFamily: _icon!.icon?.fontFamily,
+                        fontPackage: _icon!.icon?.fontPackage
                       );
                       
                       await _accountRepository.create(newAccount);

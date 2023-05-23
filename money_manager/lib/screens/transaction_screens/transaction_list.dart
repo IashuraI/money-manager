@@ -24,13 +24,17 @@ class TransactionModelListView extends StatelessWidget {
       itemBuilder: (context, index) {
         final transaction = transactions.elementAt(index);
         return TextButton(
-            onPressed: () {},
+            onPressed: () {
+              onTap(transaction);
+            },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0,8,8,8),
               child: Row(
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      onTap(transaction);
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       backgroundColor: const Color.fromRGBO(132, 164, 90, 1),
