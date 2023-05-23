@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +28,7 @@ class _TransactionEntityState extends State<TransactionEntity> {
   late final TextEditingController _date;
   late final TransactionModelRepository _transactionRepository;
   late final AccountModelRepository _accountModelRepository;
+  AccountModel? _fatherAccount;
   AccountModel? _account;
   late final List<String?> currencies;
   bool editMode = false;
@@ -64,7 +66,8 @@ class _TransactionEntityState extends State<TransactionEntity> {
               if(snapshot.hasData){
                 final allAccounts = snapshot.data as Iterable<AccountModel>;
 
-                _account = allAccounts.where((element) => element.documentId == widget.transaction.accountId).first;
+                _fatherAccount ??= allAccounts.where((element) => element.documentId == widget.transaction.accountId).first;
+                _account ??= _fatherAccount;
 
                 return Padding(
                   padding: EdgeInsets.all(getHeight(context) * 0.05),
@@ -74,6 +77,7 @@ class _TransactionEntityState extends State<TransactionEntity> {
                         children: [
                           Expanded(
                             child: TextFormField(
+                              enabled: editMode,
                               controller: _amount,
                               keyboardType: TextInputType.number,
                               inputFormatters: <TextInputFormatter>[
@@ -88,7 +92,7 @@ class _TransactionEntityState extends State<TransactionEntity> {
                                 border: OutlineInputBorder()
                               ),
                               onChanged: (value) => setState(() {
-                                editMode = true;
+                                editMode = false;
                               })
                             ),
                           ),
@@ -101,12 +105,13 @@ class _TransactionEntityState extends State<TransactionEntity> {
                                                   child: Text(locale!),
                                 );
                             }).toList(), 
-                            onChanged: (String? value) {
-                              setState(() {
-                                _currencyName = value;
-                                editMode = true;
-                              });
-                            }
+                            onChanged: null,
+                            // onChanged: (String? value) {
+                            //   setState(() {
+                            //     _currencyName = value;
+                            //     editMode = false;
+                            //   });
+                            //}
                           ),
                         ],
                       ),
@@ -123,15 +128,18 @@ class _TransactionEntityState extends State<TransactionEntity> {
                                                   child: Text(account.name),
                                 );
                             }).toList(), 
-                            onChanged: (AccountModel? value) {
-                              setState(() {
-                                _account = value;
-                              });
-                            }
+                            onChanged: null,
+                            // onChanged: (AccountModel? value) {
+                            //   setState(() {
+                            //       _account = value;
+                            //       editMode = false;
+                            //   });
+                            // }
                           ),
                           SizedBox(height: getHeight(context)*0.01),
                         ]),
                         TextField(
+                            enabled: editMode,
                             controller: _date,
                             decoration: InputDecoration( 
                               icon: const Icon(Icons.calendar_today),
@@ -152,7 +160,7 @@ class _TransactionEntityState extends State<TransactionEntity> {
                           
                                 setState(() {
                                   _date.text = formattedDate; 
-                                  editMode = true;
+                                  editMode = false;
                                 });
                               }
                             }
@@ -177,9 +185,32 @@ class _TransactionEntityState extends State<TransactionEntity> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () async {
-                    if(_currencyName != null){
+                    if(_currencyName != null && _account != null && _fatherAccount != null){
+                      if(widget.transaction.accountId != _account!.documentId){
+                        if(widget.transaction.type == TransactionType.expense){
+                          await _accountModelRepository.update(documentId: _fatherAccount!.documentId!, 
+                          entity: { "balance" : (_fatherAccount!.balance + widget.transaction.ammount).toString()});
+                          await _accountModelRepository.update(documentId: _account!.documentId!, 
+                          entity: { "balance" : (_account!.balance -  Decimal.parse(_amount.text)).toString()});
+                        }
+                        else if(widget.transaction.type == TransactionType.income){
+                          await _accountModelRepository.update(documentId:_fatherAccount!.documentId!, 
+                          entity: { "balance" : (_fatherAccount!.balance - widget.transaction.ammount).toString()});
+                          await _accountModelRepository.update(documentId: _account!.documentId!, 
+                          entity: { "balance" : (_account!.balance +  Decimal.parse(_amount.text)).toString()});
+                        }
+                      }
+
                       await _transactionRepository.update(documentId: widget.transaction.documentId!,
-                      entity: {});
+                        entity: TransactionModel(
+                          userId: widget.transaction.userId, 
+                          accountId: _account!.documentId!, 
+                          comment: widget.transaction.comment, 
+                          ammount: Decimal.parse(_amount.text), 
+                          date:  DateFormat("EEE, MMM d, yyyy").parse(_date.text), 
+                          type: widget.transaction.type, 
+                          currency: _currencyName!).toJson()
+                      );
                     }
 
 
@@ -195,6 +226,15 @@ class _TransactionEntityState extends State<TransactionEntity> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () async {
+                    if(widget.transaction.type == TransactionType.expense){
+                      await _accountModelRepository.update(documentId: _fatherAccount!.documentId!, 
+                      entity: { "balance" : (_fatherAccount!.balance + widget.transaction.ammount).toString()});
+                    }
+                    else if(widget.transaction.type == TransactionType.income){
+                      await _accountModelRepository.update(documentId:_fatherAccount!.documentId!, 
+                      entity: { "balance" : (_fatherAccount!.balance - widget.transaction.ammount).toString()});
+                    }
+
                       await _transactionRepository.delete(documentId: widget.transaction.documentId!);
                       
                       Navigator.of(context).pop();

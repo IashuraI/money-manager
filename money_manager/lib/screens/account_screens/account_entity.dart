@@ -58,18 +58,21 @@ class _AccountEntityState extends State<AccountEntity> {
             Row(
               children: [
                 TextButton(onPressed: () async {
-                  IconData? icon = await FlutterIconPicker.showIconPicker(context, iconPackModes:  [ IconPack.material ]);
+                    IconData? icon = await FlutterIconPicker.showIconPicker(context, iconPackModes:  [ IconPack.material ]);
                         
-                  setState(() {
-                    if(icon!=null){
-                      _icon = Icon(icon);
-                    }
+                    setState(() {
+                      if(icon!=null){
+                        _icon = Icon(icon);
+                      }
 
-                    editMode = true;
-                  });
-                } , child: _icon!),
+                      editMode = true;
+                    });
+                  } , 
+                child: _icon!),
+                SizedBox(width: getWigth(context) * 0.05,),
                 Expanded(child: 
                 TextFormField(
+                  textAlign: TextAlign.center,
                   controller: _accountName,
                   decoration: const InputDecoration(
                         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -85,23 +88,9 @@ class _AccountEntityState extends State<AccountEntity> {
             SizedBox(height: getHeight(context)*0.01),
             Row(
               children: [
-                DropdownButton(
-                  value: _currencyName,
-                  items: currencies.map((locale) {
-                      return DropdownMenuItem<String>(
-                                        value: locale,
-                                        child: Text(locale!),
-                      );
-                  }).toList(), 
-                  onChanged: (String? value) {
-                    setState(() {
-                      _currencyName = value;
-                      editMode = true;
-                    });
-                  }
-                ),
                 Expanded(
                   child: TextFormField(
+                    textAlign: TextAlign.center,
                     controller: _balance,
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
@@ -116,6 +105,22 @@ class _AccountEntityState extends State<AccountEntity> {
                     ),
                     onChanged: (value) => editMode = true
                   ),
+                ),
+                SizedBox(width: getWigth(context) * 0.05,),
+                DropdownButton(
+                  value: _currencyName,
+                  items: currencies.map((locale) {
+                      return DropdownMenuItem<String>(
+                                        value: locale,
+                                        child: Text(locale!),
+                      );
+                  }).toList(), 
+                  onChanged: (String? value) {
+                    setState(() {
+                      _currencyName = value;
+                      editMode = true;
+                    });
+                  }
                 ),
               ],
             ),

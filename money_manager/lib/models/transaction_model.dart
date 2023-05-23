@@ -30,8 +30,8 @@ class TransactionModel{
     this.accountIdReciver
   });
 
-  toJson(){
-    Map<String, dynamic> json = Map<String, dynamic>.from(
+  Map<String, String> toJson(){
+    Map<String, String> json = Map<String, String>.from(
       {
       "userId" : userId,
       "accountId" : accountId,
@@ -43,7 +43,7 @@ class TransactionModel{
     });
 
     if(accountIdReciver != null){
-      json.putIfAbsent("accountIdReciver", () => accountIdReciver);
+      json.putIfAbsent("accountIdReciver", () => accountIdReciver!);
     }
     return json;
   }
