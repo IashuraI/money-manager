@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 
-enum TransactionType { expense, income, transfer, goalTransfer }
+enum TransactionType { expense, income, transfer, goalIncome, goalWithdrawal }
 
 @immutable
 class TransactionModel{
@@ -30,14 +29,14 @@ class TransactionModel{
     this.accountIdReciver
   });
 
-  Map<String, String> toJson(){
-    Map<String, String> json = Map<String, String>.from(
+  Map<String, dynamic> toJson(){
+    Map<String, dynamic> json = Map<String, dynamic>.from(
       {
       "userId" : userId,
       "accountId" : accountId,
       "comment" : comment,
       "ammount" : ammount.toString(),
-      "date" : DateFormat("dd MM yyyy hh mm ss").format(date),
+      "date" : date,
       "type" : type.toString(),
       "currency" : currency.toString()
     });
@@ -55,7 +54,7 @@ class TransactionModel{
     comment = snapshot.data()["comment"].toString(),
     currency = snapshot.data()["currency"].toString(),
     ammount = Decimal.fromJson(snapshot.data()["ammount"].toString()),
-    date = DateFormat("dd MM yyyy hh mm ss").parse(snapshot.data()["date"].toString()),
+    date = (snapshot.data()["date"] as Timestamp).toDate(),
     type = TransactionType.values.firstWhere((e) => e.toString() == snapshot.data()["type"].toString()),
     accountIdReciver = snapshot.data().keys.any((element) => element == "accountIdReciver") == true ? snapshot.data()["accountIdReciver"].toString().toString() : null;
 }

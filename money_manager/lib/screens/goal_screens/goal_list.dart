@@ -25,13 +25,17 @@ class GoalModelListView extends StatelessWidget {
       itemBuilder: (context, index) {
         final goal = goals.elementAt(index);
         return TextButton(
-            onPressed: () {},
+            onPressed: () {
+              onTap(goal);
+            },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0,8,8,8),
               child: Row(
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      onTap(goal);
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       backgroundColor: const Color.fromRGBO(132, 164, 90, 1),

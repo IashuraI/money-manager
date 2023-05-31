@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager/models/goal_model.dart';
 import 'package:money_manager/reposetories/goal_repository.dart';
+import 'package:money_manager/screens/goal_screens/goal_entity.dart';
 import 'package:money_manager/screens/goal_screens/goal_list.dart';
 
 class GoalScreen extends StatefulWidget {
@@ -36,8 +37,8 @@ class _GoalScreenState extends State<GoalScreen> {
 
                 return GoalModelListView(
                   goals: allGoals,
-                  onTap: (account) {
-                    
+                  onTap: (goal) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GoalEntity(goal: goal)));
                   },
                 );
               }

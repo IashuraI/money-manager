@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:money_manager/models/account_model.dart';
 import 'package:money_manager/models/transaction_model.dart';
 import 'package:money_manager/reposetories/account_repository.dart';
+import 'package:money_manager/reposetories/goal_repository.dart';
 import 'package:money_manager/reposetories/transaction_repository.dart';
 import 'package:money_manager/services/currency_service.dart';
 import 'package:money_manager/services/device_preferences_service.dart';
@@ -28,6 +29,7 @@ class _TransactionEntityState extends State<TransactionEntity> {
   late final TextEditingController _date;
   late final TransactionModelRepository _transactionRepository;
   late final AccountModelRepository _accountModelRepository;
+  late final GoalModelRepository _goalModelRepository;
   AccountModel? _fatherAccount;
   AccountModel? _account;
   late final List<String?> currencies;
@@ -47,6 +49,7 @@ class _TransactionEntityState extends State<TransactionEntity> {
 
     _transactionRepository = TransactionModelRepository();
     _accountModelRepository = AccountModelRepository();
+    _goalModelRepository = GoalModelRepository();
 
     _currencyName = widget.transaction.currency;
 
@@ -234,12 +237,23 @@ class _TransactionEntityState extends State<TransactionEntity> {
                       await _accountModelRepository.update(documentId:_fatherAccount!.documentId!, 
                       entity: { "balance" : (_fatherAccount!.balance - widget.transaction.ammount).toString()});
                     }
+                    else if(widget.transaction.type == TransactionType.goalIncome){
+                      await _accountModelRepository.update(documentId:_fatherAccount!.documentId!, 
+                        entity: { "balance" : (_fatherAccount!.balance + widget.transaction.ammount).toString()});
 
-                      await _transactionRepository.delete(documentId: widget.transaction.documentId!);
+                        // await _goalModelRepository.update(documentId: goal, entity: {
+                        //   "balance" : (goal!.balance + widget.transaction.ammount)
+                        // });
+                    }
+
+
+                    await _transactionRepository.delete(documentId: widget.transaction.documentId!);
                       
                       Navigator.of(context).pop();
                   }, 
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(228, 235, 242, 1),
+                    foregroundColor: const Color.fromRGBO(132, 164, 90, 1),
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)))
                   ),
                   child: const Text("Delete"),

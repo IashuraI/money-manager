@@ -166,6 +166,8 @@ class _AccountEntityState extends State<AccountEntity> {
                       Navigator.of(context).pop();
                   }, 
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(228, 235, 242, 1),
+                    foregroundColor: const Color.fromRGBO(132, 164, 90, 1),
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)))
                   ),
                   child: const Text("Delete"),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:money_manager/screens/account_screens/account_screen.dart';
-import 'package:money_manager/screens/goal_screen.dart';
+import 'package:money_manager/screens/goal_screens/goal_screen.dart';
 import 'package:money_manager/screens/transaction_screens/transaction_screen.dart';
 import 'package:money_manager/screens/setting_screen.dart';
 
@@ -81,24 +81,6 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                         ),
                       RawMaterialButton(
-                      onPressed: () {
-                        setState(() {
-                          currentScreen = const AccountScreen();
-                          currentTab = 1;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.account_balance, color: currentColor(1))
-                        ],
-                      ),
-                      )
-                    ],
-                  ),
-                Row(
-                  children: [ 
-                      RawMaterialButton(
                         onPressed: () {
                           setState(() {
                             currentScreen = const GoalScreen();
@@ -112,6 +94,25 @@ class _MainScreenState extends State<MainScreen> {
                           ],
                         ),
                         ),
+                    ],
+                  ),
+                Row(
+                  children: [ 
+
+                        RawMaterialButton(
+                      onPressed: () {
+                        setState(() {
+                          currentScreen = const AccountScreen();
+                          currentTab = 1;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.account_balance, color: currentColor(1))
+                        ],
+                      ),
+                      ),
                       RawMaterialButton(
                       onPressed: () {
                         setState(() {

@@ -55,7 +55,7 @@ class TransactionModelListView extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: height * 0.01,),
-                        Text('${transaction.comment} accumulated', style: Theme.of(context).textTheme.bodySmall,),
+                        Text(transaction.comment, style: Theme.of(context).textTheme.bodySmall,),
                       ],
                     ),
                   ),

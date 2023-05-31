@@ -21,6 +21,15 @@ class GoalModelRepository {
       .map((event) => event.docs.map((doc) => GoalModel.fromSnapshot(doc)));
   }
 
+  Future<bool> update({required String documentId, required Map<String, String?> entity}) async {
+  bool result = true;
+
+    await _collectionReference .doc(documentId)
+      .update(entity).catchError((error) => result == false);
+
+    return result;
+  }
+
   Future<void> delete({required String documentId}) async {
     try {
       await _collectionReference.doc(documentId).delete();
