@@ -1,7 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+import 'package:flutter_iconpicker_plus/flutter_iconpicker.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager/models/account_model.dart';
 import 'package:money_manager/reposetories/account_repository.dart';

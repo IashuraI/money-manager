@@ -1,7 +1,8 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+import 'package:flutter_iconpicker_plus/Models/IconPack.dart';
+import 'package:flutter_iconpicker_plus/flutter_iconpicker.dart';
 import 'package:money_manager/reposetories/account_repository.dart';
 import 'package:money_manager/services/currency_service.dart';
 import 'package:money_manager/services/device_preferences_service.dart';
