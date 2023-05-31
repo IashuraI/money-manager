@@ -64,6 +64,6 @@ class DefaultFirebaseOptions {
     projectId: 'pc-api-7942935858695830085-634',
     storageBucket: 'pc-api-7942935858695830085-634.appspot.com',
     iosClientId: '309112104218-vnbe07d0rfvr90k7ek0btu7kjs024q1i.apps.googleusercontent.com',
-    iosBundleId: 'com.example.moneyManager',
+    iosBundleId: 'com.dummy-solutions.money-manager',
   );
 }
