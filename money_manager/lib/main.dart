@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/screens/account_screens/account_screen.dart';
 import 'package:money_manager/screens/add_screens/add_account_screen.dart';
@@ -12,9 +13,12 @@ import 'package:money_manager/screens/setting_screen.dart';
 import 'package:money_manager/screens/welcome_screen.dart';
 import 'base.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+void main() => runApp(
+  DevicePreview(
+    enabled: true,
+    builder: (context) => const MainApp(), // Wrap your app
+  ),
+);
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -22,6 +26,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
       home: const Base(),
       routes: {
         '/accounts/':(context) => const AccountScreen(),

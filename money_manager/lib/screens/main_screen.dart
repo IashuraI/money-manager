@@ -98,8 +98,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 Row(
                   children: [ 
-
-                        RawMaterialButton(
+                      RawMaterialButton(
                       onPressed: () {
                         setState(() {
                           currentScreen = const AccountScreen();
