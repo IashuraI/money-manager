@@ -1,45 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
-import '../../services/device_preferences_service.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late final TextEditingController _email;
-  late final TextEditingController _password;
-
-  late bool _passwordVisible;
-  
   late final GlobalKey<FormFieldState> _emailField;
 
   @override
   void initState(){
     _email = TextEditingController();
-    _password = TextEditingController();
-
-    _passwordVisible = true;
-
     _emailField = GlobalKey();
 
     super.initState();
   }
 
-  void toggle() {
-      setState(() {
-        _passwordVisible = !_passwordVisible;
-      });
-    }
-
   @override
   Widget build(BuildContext context) {
-    final height = getHeight(context);
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -82,32 +65,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     border: OutlineInputBorder()
                   ),
                 ),
-                SizedBox(height: height*0.01),
-                TextFormField(
-                  controller: _password,
-                  obscureText: _passwordVisible,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  decoration: InputDecoration(
-                    focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    prefixIcon: const Icon(Icons.fingerprint),
-                    labelText: "Password",
-                    hintText: "password",
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility),
-                      onPressed: () {
-                        toggle();
-                      },
-                    )),
-                  ),
-                  TextButton(
-                  onPressed: () {
-                    Navigator.of(context).popAndPushNamed("/forgotpassword/");
-                  }, 
-                  child: const Text("Forgot password?"), 
-                ),
               ],
             ),
             Column(
@@ -115,18 +72,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     if(_emailField.currentState!.validate()){
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      await FirebaseAuth.instance.sendPasswordResetEmail(
                         email: _email.text, 
-                        password: _password.text
                       );
                       if(!mounted) return;
-                        Navigator.of(context).popAndPushNamed("/home/");
+                        Navigator.of(context).popAndPushNamed("/login/");
                     }
                   }, 
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)))
                   ),
-                  child: const Text("   Login   "),
+                  child: const Text("   Restore password   "),
                 ),
                 TextButton(
                   onPressed: () {

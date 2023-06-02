@@ -4,6 +4,7 @@ import 'package:money_manager/screens/account_screens/account_screen.dart';
 import 'package:money_manager/screens/add_screens/add_account_screen.dart';
 import 'package:money_manager/screens/add_screens/add_goal_screen.dart';
 import 'package:money_manager/screens/add_screens/add_transaction_screen.dart';
+import 'package:money_manager/screens/auth/forgot_password_screen.dart';
 import 'package:money_manager/screens/auth/login_screen.dart';
 import 'package:money_manager/screens/auth/signup_screen.dart';
 import 'package:money_manager/screens/goal_screens/goal_screen.dart';
@@ -31,6 +32,7 @@ class MainApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       home: const Base(),
       routes: {
+        '/forgotpassword/':(context) => const ForgotPasswordScreen(),
         '/accounts/':(context) => const AccountScreen(),
         '/goals/':(context) =>  const GoalScreen(),
         '/transactions/':(context) => const TransactionScreen(),
