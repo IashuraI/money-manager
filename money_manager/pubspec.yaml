@@ -1,14 +1,27 @@
 name: money_manager
 description: A new Flutter project.
 publish_to: 'none'
-version: 0.1.0
+version: 0.1.1
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=3.0.0 <3.10.2'
 
 dependencies:
+  cloud_firestore: ^4.7.0
+  decimal: ^2.3.2
+  device_preview: ^1.1.0
+  firebase_auth: ^4.5.0
+  firebase_core: ^2.11.0
+  fl_chart: ^0.62.0
   flutter:
     sdk: flutter
+  flutter_iconpicker_plus: ^3.2.3
+  flutter_localizations:
+    sdk: flutter
+  flutter_speed_dial: ^6.2.0
+  form_validation: ^2.1.0+24
+  intl: ^0.18.0
+  jiffy: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +30,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/welcome_screen_image.png
+    

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "309112104218",
+    "project_id": "pc-api-7942935858695830085-634",
+    "storage_bucket": "pc-api-7942935858695830085-634.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309112104218:android:77d7de820dc1ce3d65f8a3",
+        "android_client_info": {
+          "package_name": "com.dummysolutions.moneymanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309112104218-7ucl2nn9r5c5sctotefuquenl0qum77b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2MaiF-_FmdzAum_-XQb7-Dd4ytAwSWCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309112104218-7ucl2nn9r5c5sctotefuquenl0qum77b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
