@@ -131,18 +131,44 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () async {
+                    String? content;
                     if (_emailField.currentState!.validate()) {
                       final result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
                         email: _email.text, 
                         password: _password.text
-                      );
-                      
-                      if(result.user != null){
-                        if(!mounted) return;
-                        Navigator.of(context).popAndPushNamed("/home/");
-                      }
-                      else{
-                        
+                      ).catchError((e){
+                        content = e.toString();
+                      });
+                    
+                      if(context.mounted){
+                        await showDialog(
+                          context: context, 
+                          builder: (context) {
+
+                          Widget okButton = TextButton(
+                            child: const Text("OK"),
+                            onPressed:  () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).popAndPushNamed("/login/");
+                            },
+                          );
+
+                          if(result.user != null){
+                            content = "Please confirm your email adress. Check your inbox or spam";
+
+                            result.user!.sendEmailVerification();
+                          }
+
+                          AlertDialog alert = AlertDialog(
+                            title: const Text("Confirmation"),
+                            content: Text(content!),
+                            actions: [
+                              okButton,
+                            ],
+                          );
+
+                          return alert;
+                        });
                       }
                     }
                   }, 

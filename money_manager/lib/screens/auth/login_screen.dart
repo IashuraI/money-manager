@@ -115,12 +115,68 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     if(_emailField.currentState!.validate()){
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      try{
+                        UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: _email.text, 
                         password: _password.text
-                      );
-                      if(!mounted) return;
-                        Navigator.of(context).popAndPushNamed("/home/");
+                        );
+
+                        if(context.mounted){
+                          if(result.user!.emailVerified){
+                            Navigator.of(context).popAndPushNamed("/home/");
+                          }
+                          else{
+                            await showDialog(
+                              context: context, 
+                              builder: (context) {
+                              
+                              result.user!.sendEmailVerification();
+
+                              Widget okButton = TextButton(
+                                child: const Text("OK"),
+                                onPressed:  () {
+
+                                  Navigator.of(context).pop();
+                                },
+                              );
+
+                              AlertDialog alert = AlertDialog(
+                                title: const Text("Confirmation"),
+                                content: const Text("Please confirm your email adress. Check your inbox or spam"),
+                                actions: [
+                                  okButton,
+                                ],
+                              );
+
+                              return alert;
+                            });
+                          }
+                        }
+                      }
+                      on FirebaseAuthException catch(e){
+                        await showDialog(
+                              context: context, 
+                              builder: (context) {
+                              
+                              Widget okButton = TextButton(
+                                child: const Text("OK"),
+                                onPressed:  () {
+
+                                  Navigator.of(context).pop();
+                                },
+                              );
+
+                              AlertDialog alert = AlertDialog(
+                                title: const Text("Confirmation"),
+                                content: Text(e.message!),
+                                actions: [
+                                  okButton,
+                                ],
+                              );
+
+                              return alert;
+                            });
+                      }
                     }
                   }, 
                   style: ElevatedButton.styleFrom(
